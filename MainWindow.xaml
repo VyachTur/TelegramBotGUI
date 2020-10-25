@@ -5,13 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TelegramBotGUI"
         mc:Ignorable="d"
-        Title="Бот Сказочник" Height="450" Width="700" MinWidth="300" MinHeight="200" BorderBrush="#FF18324F" Icon="Pic.jpg">
-    <Window.Background>
-        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-            <GradientStop Color="#FF729AD4" Offset="0"/>
-            <GradientStop Color="#FF0B2632" Offset="1"/>
-        </LinearGradientBrush>
-    </Window.Background>
+        Title="Бот Сказочник" Height="450" Width="700" MinWidth="300" MinHeight="200" BorderBrush="#FF18324F" Icon="Pic.jpg" Background="#FF9AB8C9">
 
     <Grid>
 
@@ -21,7 +15,7 @@
             <ColumnDefinition Width="2*" MinWidth="250"/>
         </Grid.ColumnDefinitions>
 
-        <GridSplitter Grid.Column="1" ShowsPreview="True" HorizontalAlignment="Center" VerticalAlignment="Stretch" Width="5" Background="#FF436A8F" />
+        <GridSplitter Grid.Column="1" ShowsPreview="True" HorizontalAlignment="Center" VerticalAlignment="Stretch" Width="5" Background="#FF7192B2" />
 
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
