@@ -20,6 +20,11 @@ namespace TelegramBotGUI {
     public partial class MainWindow : Window {
         public MainWindow() {
             InitializeComponent();
+
+            TextBlock txtBlock = new TextBlock {
+                Background = "#FF5D7FA2"
+            };
+
         }
     }
 }

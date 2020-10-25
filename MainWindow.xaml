@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TelegramBotGUI"
         mc:Ignorable="d"
-        Title="Бот Сказочник" Height="450" Width="700" MinWidth="300" MinHeight="200">
+        Title="Бот Сказочник" Height="450" Width="700" MinWidth="300" MinHeight="200" BorderBrush="#FF18324F">
 	<Window.Background>
 		<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-			<GradientStop Color="#FF6BA0D6"/>
-			<GradientStop Color="#FF0C2B4B" Offset="1"/>
+			<GradientStop Color="#FF8BB3DC"/>
+			<GradientStop Color="#FF0D2640" Offset="1"/>
 		</LinearGradientBrush>
 	</Window.Background>
 
@@ -21,7 +21,7 @@
 			<ColumnDefinition Width="2*" MinWidth="250"/>
 		</Grid.ColumnDefinitions>
 
-		<GridSplitter Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Stretch" Width="5" Background="#FF194878" />
+		<GridSplitter Grid.Column="1" ShowsPreview="True" HorizontalAlignment="Center" VerticalAlignment="Stretch" Width="5" Background="#FF6488AE" />
 
 		<Grid Grid.Column="0">
 			<Grid.RowDefinitions>
@@ -29,37 +29,30 @@
 				<RowDefinition />
 			</Grid.RowDefinitions>
 
-			<TextBlock Grid.Row="0" Text="Чаты:" Margin="5 5 5 0" FontSize="18" FontWeight="Bold" FontFamily="Segoe Print" Foreground="Black" />
-			<ListBox Grid.Row="1" x:Name="listUsers" Margin="5" FontSize="16" FontFamily="Segoe Script" FontWeight="Bold" Background="#FF93C4F9" Opacity="0.7" />
+			<TextBlock Grid.Row="0" Text="Чаты:" Margin="5 0 5 0" FontSize="18" FontWeight="Bold" FontFamily="Segoe Print" Foreground="Black" />
+			<ListBox Grid.Row="1" x:Name="listUsers" Margin="0 0 5 0" FontSize="16" FontFamily="Segoe Script" FontWeight="Bold" Background="#FF5D7FA2" Opacity="0.7" BorderBrush="Black" />
 		</Grid>
 
-        <Grid Grid.Column="2">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition />
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
+		<Grid Grid.Column="2">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition />
+				<RowDefinition Height="Auto"/>
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition />
+				<ColumnDefinition Width="Auto"/>
+			</Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="Сообщения:" Margin="5 5 5 0" FontSize="18" FontWeight="Bold" FontFamily="Segoe Print" />
+			<TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="Сообщения:" Margin="10 0 0 0" FontSize="18" FontWeight="Bold" FontFamily="Segoe Print" />
 
-            <ListBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="listMessages" Margin="5" FontFamily="Segoe Print" FontSize="16" Background="#FF93C4F9" Opacity="0.7" />
+			<ListBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="listMessages" Margin="5 0 0 0" FontFamily="Segoe Print" FontSize="16" Background="#FF325274" Opacity="0.7" BorderBrush="Black" />
 
-            <TextBox Grid.Row="2" x:Name="textMessage" MinWidth="100" TextWrapping="Wrap" FontSize="16" FontFamily="Segoe Script" Margin="5,5,0,5.001" Background="#FF93C4F9" Opacity="0.7" />
-            <Button Grid.Row="2" Grid.Column="1" x:Name="btnSendMessage" MinWidth="50" Margin="5,5,5,5.001" Padding="3" BorderBrush="#FF2F67A1" Content="&gt;&gt;&gt;" Foreground="#FF1B79DE">
-                <Button.Background>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                        <GradientStop Color="#FFDDEBF9" Offset="0"/>
-                        <GradientStop Color="#FF2C8EF7" Offset="1"/>
-                    </LinearGradientBrush>
-                </Button.Background>
-            </Button>
+			<TextBox Grid.Row="2" x:Name="textMessages" TextWrapping="Wrap" MinWidth="100" FontSize="16" FontFamily="Segoe Script" Margin="5 0 0 0" Background="#FF5D7FA2" Opacity="0.7" BorderBrush="Black" />
+			<Button Grid.Row="2" Grid.Column="1" x:Name="btnSendMessage" MinWidth="50" Margin="0" Padding="3" BorderBrush="Black" Content="&gt;&gt;&gt;" Foreground="#FF18324F" Background="#FF467CB6"/>
 
-        </Grid>
-        
-    </Grid>
+		</Grid>
+
+	</Grid>
 
 </Window>
