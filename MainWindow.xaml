@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:TelegramBotGUI"
         mc:Ignorable="d"
         Title="Бот Сказочник" Height="450" Width="700" MinWidth="300" MinHeight="200"
-        BorderBrush="#FF18324F" Background="#FF9AB8C9">
+        BorderBrush="#FF18324F" Background="#FF9AB8C9" Icon="Pic.jpg">
 
     <Grid>
 
@@ -50,6 +50,17 @@
             <ListBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="listMessages" 
                      Margin="5 0 0 0" FontFamily="Segoe Print" FontSize="16"
                      Background="#FF325274" Opacity="0.7" BorderBrush="#FF2C3B49">
+
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderBrush="#FF2C3B49" Background="#FF5D7FA2" Margin="5" BorderThickness="1" CornerRadius="5">
+                            <StackPanel Margin="10">
+                                <TextBlock Text="{Binding MessageText}" TextWrapping="Wrap" MaxWidth="400"/>
+                                <TextBlock Text="{Binding MessageTime}" Margin="0" FontSize="12" Foreground="#FF9AB8C9" TextAlignment="Right"/>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
 
             </ListBox>
 
