@@ -10,10 +10,15 @@ using Newtonsoft.Json.Linq;
 using Google.Cloud.Dialogflow.V2;
 using Newtonsoft.Json;
 using System.IO;
-
+using System.Collections.ObjectModel;
+using System.Runtime.CompilerServices;
+using System.Configuration;
+using System.Windows.Controls.Primitives;
 
 namespace TelegramBotGUI {
     class TgBot_Client {
+
+        private static MainWindow wind;
 
         private static TelegramBotClient Bot;       // телеграм-бот
         private static SessionsClient dFlowClient;  // DialogFlow-клиент
@@ -23,19 +28,19 @@ namespace TelegramBotGUI {
         private static List<string> cities = File.ReadAllText(@"C:\SKILLBOX_STUDY\C#\HOMEWORK\9\TelegramBot\Data_Files\WorldCities.txt").Split(new string[] {"\r\n"}, StringSplitOptions.None).ToList();  // список городов
         private static AllGames games;      // все текущие игры с ботом в города
 
-
         private static Dictionary<string, string> menu = new Dictionary<string, string> {
             ["Story"] = "Расскажи сказку!",
             ["Sities"] = "Поиграем в города."
         };
 
+        public static ObservableCollection<ChatUser> users;
 
-
-
-        public TgBot_Client(MainWindow win, 
+        public TgBot_Client(MainWindow otherWin, 
                     string pathToken = @"C:\SKILLBOX_STUDY\C#\HOMEWORK\10\TelegramBotGUI\Data_Files\tokens\token",
                     string pathDFlowKey = @"C:\SKILLBOX_STUDY\C#\HOMEWORK\9\TelegramBot\Data_Files\tokens\small-talk-rghy-1fa31b152405.json") {
-            
+
+            wind = otherWin;
+
             string token = File.ReadAllText(pathToken);     // токен для бота
             string dFlowKeyPath = pathDFlowKey;             // путь к токену для DialogFlow бота
 
@@ -47,6 +52,11 @@ namespace TelegramBotGUI {
 
             projectID = dic["project_id"];
             sessionID = dic["private_key_id"];
+
+            // Создание коллекции пользователей бота
+            users = new ObservableCollection<ChatUser>();
+
+            wind.listUsers.ItemsSource = users;
 
             var dialogFlowBuilder = new SessionsClientBuilder {
                 CredentialsPath = dFlowKeyPath
@@ -61,8 +71,6 @@ namespace TelegramBotGUI {
             Bot.OnCallbackQuery += Bot_OnCallbackQuery;
 
             Bot.StartReceiving();
-
-            //Bot.StopReceiving();
         }
 
 
@@ -76,7 +84,7 @@ namespace TelegramBotGUI {
 
             if (buttonText == menu["Story"]) {
                 // Выбран рассказ сказки
-                Console.WriteLine($"Сказка для пользователя username: '{e.CallbackQuery.From.Username}', имя: '{e.CallbackQuery.From.FirstName}', фамилия: {e.CallbackQuery.From.LastName}, идентификатор: '{e.CallbackQuery.From.Id}'");  // логирование
+                //Console.WriteLine($"Сказка для пользователя username: '{e.CallbackQuery.From.Username}', имя: '{e.CallbackQuery.From.FirstName}', фамилия: {e.CallbackQuery.From.LastName}, идентификатор: '{e.CallbackQuery.From.Id}'");  // логирование
 
                 await Bot.SendTextMessageAsync(e.CallbackQuery.From.Id, returnFairyTale(@"C:\SKILLBOX_STUDY\C#\HOMEWORK\9\TelegramBot\Data_Files\FairyTales.json"));
 
@@ -98,7 +106,7 @@ namespace TelegramBotGUI {
                 List<string> copyCities = new List<string>();
                 copyCities.AddRange(cities);    // делаем копию списка городов, чтобы источник не менялся
 
-                Console.WriteLine($"Играет пользователь username: '{e.CallbackQuery.From.Username}', имя: '{e.CallbackQuery.From.FirstName}', фамилия: {e.CallbackQuery.From.LastName}, идентификатор: '{e.CallbackQuery.From.Id}'");  // логирование
+                //Console.WriteLine($"Играет пользователь username: '{e.CallbackQuery.From.Username}', имя: '{e.CallbackQuery.From.FirstName}', фамилия: {e.CallbackQuery.From.LastName}, идентификатор: '{e.CallbackQuery.From.Id}'");  // логирование
 
                 games.addGame(new CitiesGame(chatId, copyCities));  // добавляет новую игру в города с ботом
 
@@ -217,7 +225,7 @@ namespace TelegramBotGUI {
                                 await Bot.SendTextMessageAsync(chatId, "Молодец, выигрышь за тобой!");
                                 await Bot.SendTextMessageAsync(chatId, "конец");
 
-                                Console.WriteLine($"Выиграл! username: '{message.Chat.Username}', имя: '{message.Chat.FirstName}', фамилия: {message.Chat.LastName}");  // логирование
+                                //Console.WriteLine($"Выиграл! username: '{message.Chat.Username}', имя: '{message.Chat.FirstName}', фамилия: {message.Chat.LastName}");  // логирование
 
                                 games.removeGame(chatId);   // удаляем игру
                                 return;
@@ -252,6 +260,17 @@ namespace TelegramBotGUI {
 
 
             if (message.Text == null) return;   // если текст сообщения null выходим из метода
+
+            wind.Dispatcher.Invoke(() =>
+            {
+                var person = new ChatUser(message.Chat.Id, message.Chat.FirstName);
+                if (!users.Contains(person)) users.Add(person);
+                users[users.IndexOf(person)].AddMessage(new Messages
+                {
+                    MessageText = $"{person.UserName}: {message.Text}",
+                    MessageTime = DateTime.Now.ToString()
+                });
+            });
 
             // Сообщение от бота (в формате HTML)
             var answerText = "Меня зовут Сказочник.\nЯ люблю общаться с людьми, рассказывать разные сказки и играть в 'Города'!\n\n" +
@@ -308,7 +327,6 @@ namespace TelegramBotGUI {
 
                     break;
 
-
             }
 
         }
@@ -343,6 +361,26 @@ namespace TelegramBotGUI {
 
             fs.Close();
             fs.Dispose();
+        }
+
+
+        public async void sendMessage(string txt)
+        {
+            if (users == null || users.Count == 0) return;
+
+            var currentUser = users[users.IndexOf(wind.listUsers.SelectedItem as ChatUser)];
+
+            Messages respMessage = new Messages
+            {
+                MessageText = $"Bot: {txt}",
+                MessageTime = DateTime.Now.ToString()
+            };
+
+            currentUser.Msgs.Add(respMessage);
+
+            await Bot.SendTextMessageAsync(currentUser.Id, txt);
+
+            wind.txtMessage.Text = "";
         }
 
 

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TelegramBotGUI"
         mc:Ignorable="d"
-        Title="Бот Сказочник" Height="450" Width="700" MinWidth="300" MinHeight="200"
+        Title="Бот Сказочник" Height="450" Width="700" MinWidth="500" MinHeight="350"
         BorderBrush="#FF18324F" Background="#FF9AB8C9" Icon="Pic.jpg">
 
     <Grid>
@@ -27,10 +27,23 @@
 
             <TextBlock Grid.Row="0" Text="Чаты:" Margin="5 0 5 0" FontSize="18"
                        FontWeight="Bold" FontFamily="Segoe Print" Foreground="Black" />
-            
+
             <ListBox Grid.Row="1" x:Name="listUsers" Margin="0 0 5 0" FontSize="16"
                      FontFamily="Segoe Script" FontWeight="Bold" Background="#FF5D7FA2"
-                     Opacity="0.7" BorderBrush="#FF2C3B49" />
+                     Opacity="0.7" BorderBrush="#FF2C3B49">
+
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding UserName}" />
+                            <TextBlock Text=" " />
+                            <TextBlock Text="{Binding UserSirname}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+                
+                
+            </ListBox>
         </Grid>
 
         <Grid Grid.Column="2">
@@ -49,13 +62,14 @@
 
             <ListBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="listMessages" 
                      Margin="5 0 0 0" FontFamily="Segoe Print" FontSize="16"
-                     Background="#FF325274" Opacity="0.7" BorderBrush="#FF2C3B49">
+                     Background="#FF325274" Opacity="0.7" BorderBrush="#FF2C3B49"
+                     ItemsSource="{Binding ElementName=listUsers, Path=SelectedItem.Msgs}">
 
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Border BorderBrush="#FF2C3B49" Background="#FF5D7FA2" Margin="5" BorderThickness="1" CornerRadius="5">
+                        <Border x:Name="brd" BorderBrush="#FF2C3B49" Background="#FF5D7FA2" Margin="5" BorderThickness="1" CornerRadius="5">
                             <StackPanel Margin="10">
-                                <TextBlock Text="{Binding MessageText}" TextWrapping="Wrap" MaxWidth="400"/>
+                                <TextBlock Text="{Binding MessageText}" TextWrapping="Wrap" />
                                 <TextBlock Text="{Binding MessageTime}" Margin="0" FontSize="12" Foreground="#FF9AB8C9" TextAlignment="Right"/>
                             </StackPanel>
                         </Border>
@@ -66,11 +80,12 @@
 
             <TextBox Grid.Row="2" x:Name="txtMessage" TextWrapping="Wrap" MinWidth="100" 
                      FontSize="16" FontFamily="Segoe Script" Margin="5 0 0 0" 
-                     Background="#FF5D7FA2" Opacity="0.7" BorderBrush="#FF2C3B49" />
+                     Background="#FF5D7FA2" Opacity="0.7" BorderBrush="#FF2C3B49"
+                     KeyDown="txtMessage_KeyDown"/>
 
             <Button Grid.Row="2" Grid.Column="1" x:Name="btnSendMessage" MinWidth="50" 
                     Margin="0" Padding="3" Content="&gt;&gt;&gt;" Foreground="#FF18324F" 
-                    Background="#FF6988AA" BorderBrush="#FF2C3B49" />
+                    Background="#FF6988AA" BorderBrush="#FF2C3B49" Click="btnSendMessage_Click"/>
 
         </Grid>
 

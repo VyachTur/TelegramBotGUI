@@ -37,27 +37,26 @@ namespace TelegramBotGUI {
             client = new TgBot_Client(this);
 
 
-            //Border bord = new Border {
-            //    BorderBrush = Brushes.Black,
-            //    BorderThickness = new Thickness(1),
-            //    CornerRadius = new CornerRadius(10),
-            //    Margin = new Thickness(5),
-            //    Background = Brushes.LightGray
-            //};
+            //Messages msg = new Messages { MessageText = "Пробное сообщение!", MessageTime = DateTime.Now.ToString() };
 
-            //TextBlock txtBl = new TextBlock() {
-            //    Text = "Сообщениецццццццццццццццццццццццццццццццццццццццццццццццццццццццццц",
-            //    MaxWidth = 400,
-            //    TextWrapping = TextWrapping.Wrap
-            //};
+            //listMessages.Items.Add(msg);
 
-            //bord.Child = txtBl;
+            //ChatUser usr = new ChatUser(1, "Петр");
 
-            Messages msg = new Messages { MessageText = "Пробное сообщениецццццwwwwww  wwwwwwwwwwwwwццццццццццц", MessageTime = DateTime.Now.ToShortTimeString() };
+            //listUsers.Items.Add(usr);
 
+        }
 
-            listMessages.Items.Add(msg);
+        // Действие по нажатию на кнопку btnSendMessage
+        private void btnSendMessage_Click(object sender, RoutedEventArgs e)
+        {
+            client.sendMessage(txtMessage.Text);
+        }
 
+        // Действие по нажатию на Enter в поле txtMessage
+        private void txtMessage_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return) client.sendMessage(txtMessage.Text);
         }
     }
 }
