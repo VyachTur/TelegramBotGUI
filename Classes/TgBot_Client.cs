@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics;
 using Telegram.Bot;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
@@ -11,9 +10,6 @@ using Google.Cloud.Dialogflow.V2;
 using Newtonsoft.Json;
 using System.IO;
 using System.Collections.ObjectModel;
-using System.Runtime.CompilerServices;
-using System.Configuration;
-using System.Windows.Controls.Primitives;
 
 namespace TelegramBotGUI {
     class TgBot_Client {
@@ -84,7 +80,7 @@ namespace TelegramBotGUI {
 
             if (buttonText == menu["Story"]) {
                 // Выбран рассказ сказки
-                //Console.WriteLine($"Сказка для пользователя username: '{e.CallbackQuery.From.Username}', имя: '{e.CallbackQuery.From.FirstName}', фамилия: {e.CallbackQuery.From.LastName}, идентификатор: '{e.CallbackQuery.From.Id}'");  // логирование
+                Debug.WriteLine($"Сказка для пользователя username: '{e.CallbackQuery.From.Username}', имя: '{e.CallbackQuery.From.FirstName}', фамилия: {e.CallbackQuery.From.LastName}, идентификатор: '{e.CallbackQuery.From.Id}'");  // логирование
 
                 await Bot.SendTextMessageAsync(e.CallbackQuery.From.Id, returnFairyTale(@"C:\SKILLBOX_STUDY\C#\HOMEWORK\9\TelegramBot\Data_Files\FairyTales.json"));
 
@@ -106,7 +102,7 @@ namespace TelegramBotGUI {
                 List<string> copyCities = new List<string>();
                 copyCities.AddRange(cities);    // делаем копию списка городов, чтобы источник не менялся
 
-                //Console.WriteLine($"Играет пользователь username: '{e.CallbackQuery.From.Username}', имя: '{e.CallbackQuery.From.FirstName}', фамилия: {e.CallbackQuery.From.LastName}, идентификатор: '{e.CallbackQuery.From.Id}'");  // логирование
+                Debug.WriteLine($"Играет пользователь username: '{e.CallbackQuery.From.Username}', имя: '{e.CallbackQuery.From.FirstName}', фамилия: {e.CallbackQuery.From.LastName}, идентификатор: '{e.CallbackQuery.From.Id}'");  // логирование
 
                 games.addGame(new CitiesGame(chatId, copyCities));  // добавляет новую игру в города с ботом
 
@@ -363,10 +359,13 @@ namespace TelegramBotGUI {
             fs.Dispose();
         }
 
-
+        /// <summary>
+        /// Метод отправляющий сервисное сообщение
+        /// </summary>
+        /// <param name="txt">Текст сервисного сообщения</param>
         public async void sendMessage(string txt)
         {
-            if (users == null || users.Count == 0) return;
+            if (txt == String.Empty || users == null || users.Count == 0) return;
 
             var currentUser = users[users.IndexOf(wind.listUsers.SelectedItem as ChatUser)];
 
@@ -383,6 +382,24 @@ namespace TelegramBotGUI {
             wind.txtMessage.Text = "";
         }
 
+        /// <summary>
+        /// Сериализация сервисных чатов с пользователями
+        /// </summary>
+        public void jsonSerializedMessages()
+        {
+            string json = JsonConvert.SerializeObject(users);
+            File.WriteAllText("ServiceMessages.json", json);
+        }
+
+        /// <summary>
+        /// Десериализация сервисных чатов с пользователями
+        /// </summary>
+        public void jsonDeserializedMessages()
+        {
+            string json = File.ReadAllText("ServiceMessages.json");
+            users = JsonConvert.DeserializeObject<ObservableCollection<ChatUser>>(json);
+            wind.listUsers.ItemsSource = users;
+        }
 
     }
 }

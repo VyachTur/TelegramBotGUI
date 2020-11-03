@@ -1,12 +1,6 @@
-﻿using Microsoft.SqlServer.Server;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Telegram.Bot.Requests;
 
 namespace TelegramBotGUI
 {
@@ -57,7 +51,7 @@ namespace TelegramBotGUI
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;   // оповещение об изменении форм отображения инфы
+        public event PropertyChangedEventHandler PropertyChanged;   // оповещение об изменении элемента
 
         /// <summary>
         /// Сравнение id двух пользователей
@@ -71,6 +65,10 @@ namespace TelegramBotGUI
         /// </summary>
         public ObservableCollection<Messages> Msgs { get; set; }
 
+        /// <summary>
+        /// Добавление сообщения в коллекцию Msgs
+        /// </summary>
+        /// <param name="text">Текст добавляемого сообщения</param>
         public void AddMessage(Messages text) => Msgs.Add(text);
 
         private long id;            // идентификатор чата пользователя
