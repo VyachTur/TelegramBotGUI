@@ -396,6 +396,8 @@ namespace TelegramBotGUI {
         /// </summary>
         public void jsonDeserializedMessages()
         {
+            if (!File.Exists("ServiceMessages.json")) return;
+
             string json = File.ReadAllText("ServiceMessages.json");
             users = JsonConvert.DeserializeObject<ObservableCollection<ChatUser>>(json);
             wind.listUsers.ItemsSource = users;
