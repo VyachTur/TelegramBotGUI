@@ -12,6 +12,10 @@ using System.IO;
 using System.Collections.ObjectModel;
 
 namespace TelegramBotGUI {
+
+    /// <summary>
+    /// Класс реализующий телеграм-бота
+    /// </summary>
     class TgBot_Client {
 
         private static MainWindow wind;
@@ -37,7 +41,10 @@ namespace TelegramBotGUI {
 
             wind = otherWin;
 
-            string token = File.ReadAllText(pathToken);     // токен для бота
+            string token = File.ReadAllText(pathToken);
+            //string token = "";     // здесь необходимо прописать токен
+            // своего телеграм-бота (приведенный токен не рабочий)
+
             string dFlowKeyPath = pathDFlowKey;             // путь к токену для DialogFlow бота
 
             // Создание telegram-бота

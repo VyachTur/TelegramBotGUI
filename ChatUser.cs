@@ -9,8 +9,16 @@ namespace TelegramBotGUI
     /// </summary>
     public class ChatUser : INotifyPropertyChanged, IEquatable<ChatUser>
     {
+        /// <summary>
+        /// Конструктор по умолчанию
+        /// </summary>
         public ChatUser() { }
 
+        /// <summary>
+        /// Конструктор
+        /// </summary>
+        /// <param name="chatId">Идентификатор чата с пользователем</param>
+        /// <param name="userName">Имя пользователя</param>
         public ChatUser(long chatId, string userName)
         {
             Id = chatId;
