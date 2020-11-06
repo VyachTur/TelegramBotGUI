@@ -25,7 +25,7 @@ namespace TelegramBotGUI {
         private static string projectID;            // идентификатор проекта (DialogFlow)
         private static string sessionID;            // идентификатор сессии (DialogFlow)
 
-        private static List<string> cities = File.ReadAllText(@"C:\SKILLBOX_STUDY\C#\HOMEWORK\9\TelegramBot\Data_Files\WorldCities.txt").Split(new string[] {"\r\n"}, StringSplitOptions.None).ToList();  // список городов
+        private static List<string> cities = File.ReadAllText(@"..\..\Data_Files\WorldCities.txt").Split(new string[] {"\r\n"}, StringSplitOptions.None).ToList();  // список городов
         private static AllGames games;      // все текущие игры с ботом в города
 
         private static Dictionary<string, string> menu = new Dictionary<string, string> {
@@ -35,17 +35,22 @@ namespace TelegramBotGUI {
 
         public static ObservableCollection<ChatUser> users;
 
+        /// <summary>
+        /// Конструктор телеграм-бота
+        /// </summary>
+        /// <param name="otherWin">Окно сервисного клиента</param>
+        /// <param name="pathToken">Ключ телеграм-бота (НЕОБХОДИМО ВВЕСТИ СВОЕ ЗНАЧЕНИЕ КЛЮЧА)</param>
+        /// <param name="pathDFlowKey">Ключ DialogFlow-клиента</param>
         public TgBot_Client(MainWindow otherWin, 
-                    string pathToken = @"C:\SKILLBOX_STUDY\C#\HOMEWORK\10\TelegramBotGUI\Data_Files\tokens\token",
-                    string pathDFlowKey = @"C:\SKILLBOX_STUDY\C#\HOMEWORK\9\TelegramBot\Data_Files\tokens\small-talk-rghy-1fa31b152405.json") {
+                    string pathToken = @"..\..\Data_Files\tokens\token",
+                    string pathDFlowKey = @"..\..\Data_Files\tokens\small-talk-rghy-1fa31b152405.json") {
 
             wind = otherWin;
 
+            //string token = pathToken;   // токен телеграм-бота
             string token = File.ReadAllText(pathToken);
-            //string token = "";     // здесь необходимо прописать токен
-            // своего телеграм-бота (приведенный токен не рабочий)
 
-            string dFlowKeyPath = pathDFlowKey;             // путь к токену для DialogFlow бота
+            string dFlowKeyPath = pathDFlowKey; // путь к токену для DialogFlow бота
 
             // Создание telegram-бота
             Bot = new TelegramBotClient(token);
@@ -67,7 +72,7 @@ namespace TelegramBotGUI {
 
             dFlowClient = dialogFlowBuilder.Build();
 
-            games = new AllGames();
+            games = new AllGames(); // инициализация игры в города
 
             // Обрабатывем сообщения от пользователя бота
             Bot.OnMessage += Bot_OnMessage;
